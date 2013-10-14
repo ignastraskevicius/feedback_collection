@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       	 xmlns:jee="http://www.springframework.org/schema/jee"
+       	 xmlns:context="http://www.springframework.org/schema/context"
+
+         xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		   http://www.springframework.org/schema/jee 
+		   http://www.springframework.org/schema/jee/spring-jee.xsd
+		   http://www.springframework.org/schema/context 
+		   http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+
+    <import resource="hibernate.xml"/>
+
+    <context:component-scan base-package="lt.agmis.feedbackcollection.daohibernateimpl" />
+
+    <context:component-scan base-package="lt.agmis.feedbackcollection.configuration.beans.dbmigration" />
+
+    <import resource="hibernate.xml"/>
+
+    <beans profile="db-integration-test,system-integration-test">
+        
+        <bean name="databaseTester" class="org.dbunit.DataSourceDatabaseTester">
+	        <constructor-arg ref="dataSourceForDbunit" />
+	    </bean>
+
+        <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+			<property name="driverClassName" value="${test.dbOperators.driverClassName}" />
+			<property name="url" value="${test.dbOperators.url}" />
+			<property name="username" value="${test.dbOperators.username}" />
+			<property name="password" value="${test.dbOperators.password}" />
+		</bean>
+		
+        <bean id="dataSourceForDbunit" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+			<property name="driverClassName" value="${test.dbOperatorsForDbUnit.driverClassName}" />
+			<property name="url" value="${test.dbOperatorsForDbUnit.url}" />
+			<property name="username" value="${test.dbOperators.username}" />
+			<property name="password" value="${test.dbOperators.password}" />
+		</bean>
+		
+        <bean id="jdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+            <constructor-arg ref="dataSourceForDbunit" />
+        </bean>
+   	</beans>
+    
+	<beans profile="production">
+        <jee:jndi-lookup id="dataSource" jndi-name="java:comp/env/jdbc/feedback_collectionDataSource" expected-type="javax.sql.DataSource" />
+	</beans>
+</beans>
