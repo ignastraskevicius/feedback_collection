@@ -4,6 +4,7 @@ import com.googlecode.flyway.core.Flyway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -27,27 +28,29 @@ public class FlywayDbCleanMigrate {
 	
 	@Autowired
 	private DataSource dataSource;
-	
+
+    @Value("#{dbMigrationActivated}")
+    private Boolean dbMigrationActivated;
+
 	@Bean(name="flywayMigrationsOfCompanies")
 	public Flyway flyway() {
-
-		
-		JdbcTemplate jdbc = new JdbcTemplate(dataSource);
-
-        switch(Database.MYSQL) {
-            case MYSQL: break;
-            case POSTGRES: jdbc.execute("DROP SCHEMA IF EXISTS public CASCADE "); break;
-            default: throw new RuntimeException("Database type is not specified. Specify one in switch statement. Database Migration failed");
-        }
-
         Flyway flyway = new Flyway();
-		flyway.setDataSource(dataSource);
-		flyway.setInitVersion("0.0.1");
-		flyway.setSchemas("feedback_collection_test");
-		flyway.clean();
-		flyway.init();
-		flyway.migrate();
-		
+        if(dbMigrationActivated) {
+            JdbcTemplate jdbc = new JdbcTemplate(dataSource);
+
+            switch(Database.MYSQL) {
+                case MYSQL: break;
+                case POSTGRES: jdbc.execute("DROP SCHEMA IF EXISTS public CASCADE "); break;
+                default: throw new RuntimeException("Database type is not specified. Specify one in switch statement. Database Migration failed");
+            }
+
+            flyway.setDataSource(dataSource);
+            flyway.setInitVersion("0.0.1");
+            flyway.setSchemas("feedback_collection_test");
+            flyway.clean();
+            flyway.init();
+            flyway.migrate();
+        }
 		return flyway;
 	}
 }
