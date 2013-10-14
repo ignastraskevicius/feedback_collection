@@ -34,7 +34,7 @@ public class FlywayDbCleanMigrate {
 
 	@Bean(name="flywayMigrationsOfCompanies")
 	public Flyway flyway() {
-        Flyway flyway = new Flyway();
+        Flyway flyway = null;
         if(dbMigrationActivated) {
             JdbcTemplate jdbc = new JdbcTemplate(dataSource);
 
@@ -44,6 +44,7 @@ public class FlywayDbCleanMigrate {
                 default: throw new RuntimeException("Database type is not specified. Specify one in switch statement. Database Migration failed");
             }
 
+            flyway = new Flyway();
             flyway.setDataSource(dataSource);
             flyway.setInitVersion("0.0.1");
             flyway.setSchemas("feedback_collection_test");

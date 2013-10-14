@@ -17,6 +17,7 @@
 
     <context:component-scan base-package="lt.agmis.feedbackcollection.daohibernateimpl" />
 
+    <!-- Deactivate hibernate hbm2dll if this one is activated -->
     <bean id="dbMigrationActivated" class="java.lang.Boolean" >
         <constructor-arg value="false"/>
     </bean>

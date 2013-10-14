@@ -31,8 +31,9 @@ public class DummyFlyway {
 	
 	@Bean(name="flywayMigrationsOfCompanies")
 	public Flyway flyway() {
-        Flyway flyway = new Flyway();
+        Flyway flyway = null;
         if(dbMigrationActivated) {
+            flyway = new Flyway();
             logger.trace("Dummy Migration bean init");
             flyway.setDataSource(dataSource);
         }
