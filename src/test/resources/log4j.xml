@@ -10,17 +10,42 @@
   </layout>
  </appender>
 
- <logger name="lt.agmis">
-  <level value="trace" />
- </logger>
+ <!--<logger name="lt.agmis">-->
+   <!--<level value="trace" />-->
+ <!--</logger>-->
 
-    <logger name="lt.agmis.feedbackcollection.tests">
-        <level value="trace" />
+    <logger name="jdbc.sqlonly">
+        <level value="debug" />
+    </logger>
+
+    <!--<logger name="jdbc.sqltiming">-->
+        <!--<level value="error" />-->
+    <!--</logger>-->
+
+    <!--<logger name="jdbc.audit">-->
+        <!--<level value="error" />-->
+    <!--</logger>-->
+
+    <!--<logger name="jdbc.resultset">-->
+        <!--<level value="error" />-->
+    <!--</logger>-->
+
+
+    <!--<logger name="jdbc.connection">-->
+        <!--<level value="error" />-->
+    <!--</logger>-->
+
+    <!--<logger name="org.hibernate.transaction">-->
+        <!--<level value="error" />-->
+    <!--</logger>-->
+
+    <logger name="lt.agmis.feedbackcollection">
+        <level value="info" />
     </logger>
 
  <!-- Root Logger -->
  <root>
-  <priority value="info" />
+  <priority value="warn" />
   <appender-ref ref="console" />
  </root>
  

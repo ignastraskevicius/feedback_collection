@@ -16,7 +16,7 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-	@RequestMapping(produces = {"application/json"}, method = RequestMethod.GET)
+	@RequestMapping(produces = {"application/json;charset=UTF-8"}, method = RequestMethod.GET)
 	@ResponseBody
 	public CategoryListWrapper getCategories() {
         CategoryListWrapper categoryListDto = new CategoryListWrapper();
@@ -24,7 +24,7 @@ public class CategoryController {
 		return categoryListDto;
     }
 
-    @RequestMapping(produces = {"application/json"},  method = RequestMethod.POST)
+    @RequestMapping(produces = {"application/json;charset=UTF-8"},  method = RequestMethod.POST)
     @ResponseBody
     public CreateResult addCategory(@RequestBody Category category) {
         CreateResult result = new CreateResult();

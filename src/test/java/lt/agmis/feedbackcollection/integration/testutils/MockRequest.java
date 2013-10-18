@@ -27,7 +27,7 @@ public class MockRequest {
     public String retrieveJson(MockHttpServletRequestBuilder link) throws Exception {
         MvcResult result = mockMvc.perform(link.accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType("application/json"))
+                .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andReturn();
         String json = result.getResponse().getContentAsString();
         return json;
@@ -40,7 +40,7 @@ public class MockRequest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonString))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType("application/json"))
+                .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andReturn();
         String json = result.getResponse().getContentAsString();
         return json;
@@ -57,5 +57,18 @@ public class MockRequest {
     public void submitRequest(MockHttpServletRequestBuilder link) throws Exception {
         mockMvc.perform(link)
                 .andExpect(status().isOk());
+    }
+
+    public void submitJsonReturn400(MockHttpServletRequestBuilder link, String jsonString) throws Exception {
+        mockMvc.perform(
+                link
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonString))
+                .andExpect(status().isBadRequest());
+    }
+
+    public void return404(MockHttpServletRequestBuilder link) throws Exception {
+        mockMvc.perform(link)
+                .andExpect(status().isNotFound());
     }
 }
